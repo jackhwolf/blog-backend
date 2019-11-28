@@ -19,20 +19,20 @@ class db:
 
     def __init__(self):
         self.res = boto3.resource(
-                'dynamodb',
-                aws_access_key_id=os.environ.get('awsaccess'),
-                aws_secret_access_key=os.environ.get('awssecret'),
-                region_name='us-west-1'
-            )
+            'dynamodb',
+            aws_access_key_id=os.environ.get('awsaccess'),
+            aws_secret_access_key=os.environ.get('awssecret'),
+            region_name='us-west-1'
+        )
 
     def getcli(self):
         ''' get a client '''
         return boto3.client(
-                        'dynamodb',
-                        aws_access_key_id=os.environ.get('awsaccess'),
-                        aws_secret_access_key=os.environ.get('awssecret'),
-                        region_name='us-west-1'
-                    )
+            'dynamodb',
+            aws_access_key_id=os.environ.get('awsaccess'),
+            aws_secret_access_key=os.environ.get('awssecret'),
+            region_name='us-west-1'
+        )
 
     def create__(self, tid, schema, atr_defn, **kw):
         ''' attempt to create this db table '''
@@ -73,7 +73,6 @@ class db:
         ''' scan the table '''
         cli = self.getcli()
         return cli.scan(TableName=tid, **kw)
-
 
 
 ##################
@@ -125,28 +124,28 @@ class superdb(db):
             return False, str(e)
 
 
-##################
-# post-ddb class #
-##################
+######################################
+# post description/metrics ddb class #
+######################################
 
-class postddb(superdb):
-    ''' i work with the post ddb table '''
+class PostDescAndMetricDDB(superdb):
+    ''' i work with the post description and metrics ddb table '''
 
     def __init__(self, **kw):
         ''' store info abt table '''
-        self.tid = 'mywebsite-posts'    # name of table
-        self.ks = [                        # schema for keys
-                    {
-                        'AttributeName': 'postid',
-                        'KeyType': 'HASH'
-                    }
-                ]
-        self.atr_defn = [                  # what types are our keys
-                    {
-                        'AttributeName': 'postid',
-                        'AttributeType': 'S'
-                    }
-                ]
+        self.tid = 'blogpost-description-metrics'    # name of table
+        self.ks = [                              # schema for keys
+            {
+                'AttributeName': 'postid',
+                'KeyType': 'HASH'
+            }
+        ]
+        self.atr_defn = [                        # what types are our keys
+            {
+                'AttributeName': 'postid',
+                'AttributeType': 'S'
+            }
+        ]
         superdb.__init__(self, self.tid, self.ks, self.atr_defn)
 
     def create(self):
@@ -157,6 +156,7 @@ class postddb(superdb):
         ''' make sure ddb entry is standard '''
         e = {
             'postid': e['postid'],
+            'time': str(int(time.time()*1000)),
             'post': {
                 'author': e.get('author', kw.get('author', 'Jack Wolf')),
                 'title':   e.get('title', '-'),
@@ -165,7 +165,7 @@ class postddb(superdb):
             },
             'metrics': {
                 'clicks': 0,
-                'favs':   0
+                'likes':   0
             },
         }
         return e
@@ -204,4 +204,4 @@ class postddb(superdb):
 
     def updateMetrics(self, postid, metric, **kw):
         ''' update the metrics of some post '''
-        pass
+        return True, ""
