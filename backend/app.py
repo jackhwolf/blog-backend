@@ -2,7 +2,7 @@ from flask import Flask, Blueprint, make_response, jsonify
 from flask_restplus import Resource, Api, reqparse
 import werkzeug
 from flask_cors import CORS
-from ddb import PostDescAndMetricDDB, PostContentDDB
+from ddb import PostDescAndMetricDDB
 import json
 import decimal
 import time
@@ -73,6 +73,7 @@ class blogpost(Resource):
         parser.add_argument('tags', required=True, help='Delimd tags.')
         parser.add_argument('token', required=True, help='secure password', location='headers')
         args = dict(parser.parse_args())
+        print(args['token'], TOKEN)
         if args['token'] == TOKEN:
             key = makekey()
             args['postid'] = key
