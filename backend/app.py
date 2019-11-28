@@ -118,9 +118,10 @@ class metrics(Resource):
 class test(Resource):
 
     def get(self):
+        print("[/v1/test] GET")
         return {"test": "success"}
 
-        
+
 # run it locally
 app.register_blueprint(api_bp)
 app.run(debug=True)
