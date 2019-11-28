@@ -114,7 +114,13 @@ class metrics(Resource):
         )
         return handleret(resp)
 
+@api.route('/test')
+class test(Resource):
 
+    def get(self):
+        return {"test": "success"}
+
+        
 # run it locally
 app.register_blueprint(api_bp)
 app.run(debug=True)
