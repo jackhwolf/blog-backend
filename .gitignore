@@ -7,4 +7,4 @@ venv
 **/*.sh
 **/admin-frontend
 **/admin-frontend/*
-
+**/.ipynb_checkpoints
