@@ -37,7 +37,7 @@ api = Api(api_bp)
 
 # setup ddb conn
 descMetrDB = PostDescAndMetricDDB()
-print(descMetrDB.create())
+# print(descMetrDB.create())
 
 #######
 # API #
@@ -67,13 +67,13 @@ class blogpost(Resource):
             tags:  list of tags delimd by "*"
             token: secure token 
         '''
+        print(f"{time.time()}: [blogpost] POST")
         parser = reqparse.RequestParser()
         parser.add_argument('title', required=True, help='Title of post.')
         parser.add_argument('desc', required=True, help='Short description.')
         parser.add_argument('tags', required=True, help='Delimd tags.')
         parser.add_argument('token', required=True, help='secure password', location='headers')
         args = dict(parser.parse_args())
-        print(args['token'], TOKEN)
         if args['token'] == TOKEN:
             key = makekey()
             args['postid'] = key
@@ -84,13 +84,14 @@ class blogpost(Resource):
 
     def get(self):
         ''' scan table, format entries, and send back'''
+        print(f"{time.time()}: [blogpost] GET")
         scan = descMetrDB.scanPosts().get('Items', [{}])
         data = []
         for s in scan:
             post = s['post']['M']
             post = {k: v[list(v)[0]] for k, v in post.items()}
             data.append({'postid': s['postid']['S'], 'post': post})
-        data = sorted(data, key=lambda x: int(x['postid']))
+        data = sorted(data, key=lambda x: int(x['postid'].split('===')[-1]))
         return handleret({'data': data})
 
 
@@ -105,6 +106,7 @@ class metrics(Resource):
             postid: ID of post to update
             metric: either "click" or "like"    
         '''
+        print(f"{time.time()}: [metrics] POST")
         parser = reqparse.RequestParser()
         parser.add_argument('postid', required=True, help="post ID")
         parser.add_argument('metric', required=True, help="click or like")
@@ -118,10 +120,12 @@ class metrics(Resource):
 class test(Resource):
 
     def get(self):
-        print("[/v1/test] GET")
-        return {"test": "success"}
+        print("[test] GET")
+        return {"test": f"success {int(time.time())}"}
 
+
+# tie in api
+app.register_blueprint(api_bp)
 
 # run it locally
-app.register_blueprint(api_bp)
-app.run(debug=True)
+# app.run(debug=True)
