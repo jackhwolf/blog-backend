@@ -24,7 +24,6 @@ class DecimalEncoder(json.JSONEncoder):
                 return int(o)
         return super(DecimalEncoder, self).default(o)
 
-
 #########
 # SETUP #
 #########
@@ -64,7 +63,7 @@ class blogpost(Resource):
         @args:
             title: title of post
             desc:  short description of post, clickbait
-            tags:  list of tags delimd by "*"
+            tags:  list of tags delimd by ", "
             token: secure token 
         '''
         parser = reqparse.RequestParser()
@@ -73,7 +72,6 @@ class blogpost(Resource):
         parser.add_argument('tags', required=True, help='Delimd tags.')
         parser.add_argument('token', required=True, help='secure password', location='headers')
         args = dict(parser.parse_args())
-        print(args['token'], TOKEN)
         if args['token'] == TOKEN:
             key = makekey()
             args['postid'] = key
