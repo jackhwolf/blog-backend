@@ -32,6 +32,16 @@ CORS(app)
 #########
 
 def fixMediaPaths(filepath, postid, mpaths):
+    '''
+    If there are media files referenced in the markdown file
+    we need to rename the links in the file to point to the 
+    media files new url in the git repo
+    @args:
+        filepath: str, path to markdown file on local
+        postid:   str, unique id of post. used to form url
+        mpaths:   list of str, local paths to media files
+    @return None
+    '''
     with open(filepath, 'r') as fp:
         contents = fp.read()
         for mp in mpaths:
@@ -39,8 +49,18 @@ def fixMediaPaths(filepath, postid, mpaths):
             contents = contents.replace(mp, base_repo.format(postid) + "/" + mp)
     with open(filepath, 'w') as fp:
         fp.write(contents)
+    return None
 
 def redeploy(json):
+    '''
+    Take our local markdown (and maybe media files) and move them to 
+    local git repo for /blog, then call some commands to push changes
+    and redeploy to GitHub-pages
+    If an error is thrown, it is caught and returned as part of response
+    @args:
+        json: dict, data from request
+    @return: None
+    '''
     ddst = post_base_dir.format(json['postid'])
     os.makedirs(ddst, exist_ok=True)
     dst = f"{ddst}/post.md"
@@ -55,7 +75,7 @@ def redeploy(json):
     os.chdir(base_dir)
     os.system("git add src/posts/*; git commit -m \"submission: [$(date)]\"; git push -u origin master; npm run deploy")
     os.chdir(owd)
-    return True
+    return None
 
 
 #############
