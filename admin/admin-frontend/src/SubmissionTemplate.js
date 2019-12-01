@@ -119,13 +119,13 @@ class SubmissionTemplate extends React.Component {
                             </Form.Group>
 
                             <Form.Group controlId="formPath">
-                                <Form.Label>Path on local</Form.Label>
-                                <Form.Control type="path" placeholder="Enter absolute path to post file on local" ref={this.path} />
+                                <Form.Label>Relative ath on local (from /home/twilight/admin/staging/</Form.Label>
+                                <Form.Control type="path" placeholder="Enter rel. path to post file on local" ref={this.path} />
                             </Form.Group>
 
                             <Form.Group controlId="formToken">
                                 <Form.Label>Token check</Form.Label>
-                                <Form.Control type="token" placeholder="Enter your admin token" ref={this.token} />
+                                <Form.Control type="password" placeholder="Enter your admin token" ref={this.token} />
                             </Form.Group>
 
                             <Button variant="danger" onClick={() => this.submit()}>
