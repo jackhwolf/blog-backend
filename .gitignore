@@ -6,3 +6,5 @@ venv
 **/.vscode
 **/*.sh
 **/frontend
+**/*.ipynb
+**/.ipynb_checkpoints
