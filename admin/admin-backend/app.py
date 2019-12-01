@@ -38,7 +38,7 @@ def redeploy(json):
     owd = os.getcwd()
     os.chdir(base_dir)
     os.system(
-        "git add src/posts/*; git commit -m \"submission [%(date)]\"; git push -u origin master; npm run deploy")
+        "git add src/posts/*; git commit -m \"submission [$(date)]\"; git push -u origin master; npm run deploy")
     os.chdir(owd)
     return True
 
