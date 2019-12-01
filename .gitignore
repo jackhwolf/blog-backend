@@ -8,3 +8,4 @@ venv
 **/frontend
 **/*.ipynb
 **/.ipynb_checkpoints
+**/staging
