@@ -8,7 +8,7 @@ class SubmissionTemplate extends React.Component {
 
     constructor(props) {
         super(props)
-        this.big = '38rem'
+        this.big = '38.5rem'
         this.little = '15.5rem'
         this.varA = 'primary'
         this.varB = 'info'
@@ -30,25 +30,25 @@ class SubmissionTemplate extends React.Component {
     }
 
     async submit() {
-        // var remoteresp = await this.myPost(
-        //     'http://13.56.250.168/v1/blogpost', {
-        //         title: this.title.current.value,
-        //         desc: this.desc.current.value,
-        //         tags: this.tags.current.value
-        //     }
-        // )
-        // console.log("[SubmissionTemplate.submit] remote response:")
-        // console.log(remoteresp)
+        var remoteresp = await this.myPost(
+            'http://13.56.250.168/v1/blogpost', {
+                title: this.title.current.value,
+                desc: this.desc.current.value,
+                tags: this.tags.current.value,
+            }
+        )
+        console.log("[SubmissionTemplate.submit] remote response:")
+        console.log(remoteresp)
         this.changeDisplay()
-        // var localresp = await this.myPost(
-        //     'http://127.0.0.1:5000/v1/submitpost', {
-        //         postid: remoteresp.uploadkey,
-        //         localpath: this.path.current.value 
-        //     }
-        // )
-        // console.log("[SubmissionTemplate.submit] local response:")
-        // console.log(localresp)
-        // this.setState({localresp: localresp})
+        var localresp = await this.myPost(
+            'http://127.0.0.1:5000/v1/submitpost', {
+                postid: remoteresp.uploadkey,
+                localpath: this.path.current.value
+            }
+        )
+        console.log("[SubmissionTemplate.submit] local response:")
+        console.log(localresp)
+        this.setState({localresp: localresp})
         ReactDOM.findDOMNode(this.myForm).reset();
     }
 
@@ -117,6 +117,7 @@ class SubmissionTemplate extends React.Component {
                                 <Form.Label>Path on local</Form.Label>
                                 <Form.Control type="path" placeholder="Enter absolute path to post file on local" ref={this.path} />
                             </Form.Group>
+
                             <Button variant="danger" onClick={() => this.submit()}>
                                 Submit
                             </Button >

@@ -70,7 +70,8 @@ class blogpost(Resource):
         parser.add_argument('title', required=True, help='Title of post.')
         parser.add_argument('desc', required=True, help='Short description.')
         parser.add_argument('tags', required=True, help='Delimd tags.')
-        parser.add_argument('token', required=True, help='secure password', location='headers')
+        parser.add_argument('token', required=True,
+                            help='secure password', location='headers')
         args = dict(parser.parse_args())
         if args['token'] == TOKEN:
             key = makekey()
@@ -88,7 +89,7 @@ class blogpost(Resource):
             post = s['post']['M']
             post = {k: v[list(v)[0]] for k, v in post.items()}
             data.append({'postid': s['postid']['S'], 'post': post})
-        data = sorted(data, key=lambda x: int(x['postid']))
+        data = sorted(data, key=lambda x: int(x['postid']), reverse=True)
         return handleret({'data': data})
 
 
