@@ -33,6 +33,7 @@ class SubmissionTemplate extends React.Component {
     }
 
     async submit() {
+        // submit post to remote server to add to DynamoDB
         var remoteresp = await this.myPost(
             'http://13.56.250.168/v1/blogpost', {
                 title: this.title.current.value,
@@ -42,7 +43,9 @@ class SubmissionTemplate extends React.Component {
         )
         console.log("[SubmissionTemplate.submit] remote response:")
         console.log(remoteresp)
+        // show user status of post
         this.changeDisplay()
+        // submit post to local server to move into repo and redeploy
         var localresp = await this.myPost(
             'http://127.0.0.1:5000/v1/submitpost', {
                 postid: remoteresp.uploadkey,
@@ -53,6 +56,7 @@ class SubmissionTemplate extends React.Component {
         )
         console.log("[SubmissionTemplate.submit] local response:")
         console.log(localresp)
+        // give user result
         this.setState({localresp: localresp})
         ReactDOM.findDOMNode(this.myForm).reset();
     }
@@ -74,6 +78,7 @@ class SubmissionTemplate extends React.Component {
         })
     }
 
+    // helper method to POST to url w/ given body
     async myPost(url, body) {
         var resp = await fetch(url, {
             method: 'POST',
