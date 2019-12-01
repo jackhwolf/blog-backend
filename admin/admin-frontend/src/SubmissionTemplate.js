@@ -4,11 +4,13 @@ import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
+const base = '/home/twilight/py/mywebsite/admin/staging/'
+
 class SubmissionTemplate extends React.Component {
 
     constructor(props) {
         super(props)
-        this.big = '38.5rem'
+        this.big = '43.5rem'
         this.little = '15.5rem'
         this.varA = 'primary'
         this.varB = 'info'
@@ -25,6 +27,7 @@ class SubmissionTemplate extends React.Component {
         this.title = React.createRef()
         this.desc = React.createRef() 
         this.tags = React.createRef() 
+        this.media = React.createRef() 
         this.token = React.createRef() 
         this.path = React.createRef()
     }
@@ -43,7 +46,9 @@ class SubmissionTemplate extends React.Component {
         var localresp = await this.myPost(
             'http://127.0.0.1:5000/v1/submitpost', {
                 postid: remoteresp.uploadkey,
-                localpath: this.path.current.value
+                localbase: base,
+                localpath: this.path.current.value,
+                mediapaths: this.media.current.value
             }
         )
         console.log("[SubmissionTemplate.submit] local response:")
@@ -91,7 +96,7 @@ class SubmissionTemplate extends React.Component {
                         <Form id='myForm'
                             className="form"
                             ref={form => this.myForm = form}
-                            style={{margin: '15px'}}>
+                            style={{margin: '10px'}}>
 
                             <Form.Group controlId="formTitle">
                                 <Form.Label>Post title</Form.Label>
@@ -105,17 +110,22 @@ class SubmissionTemplate extends React.Component {
 
                             <Form.Group controlId="formTags">
                                 <Form.Label>Post tags, separated by commas</Form.Label>
-                                <Form.Control type="tags" placeholder="Enter post tags" ref={this.tags}/>
+                                <Form.Control type="tags" placeholder="Enter post tags" ref={this.tags} />
                             </Form.Group>
 
-                            <Form.Group controlId="formToken">
-                                <Form.Label>Token check</Form.Label>
-                                <Form.Control type="token" placeholder="Enter your admin token" ref={this.token}/>
+                            <Form.Group controlId="formMedia">
+                                <Form.Label>Assoc. media files, separated by commas</Form.Label>
+                                <Form.Control type="media" placeholder="Enter media file paths" ref={this.media} />
                             </Form.Group>
 
                             <Form.Group controlId="formPath">
                                 <Form.Label>Path on local</Form.Label>
                                 <Form.Control type="path" placeholder="Enter absolute path to post file on local" ref={this.path} />
+                            </Form.Group>
+
+                            <Form.Group controlId="formToken">
+                                <Form.Label>Token check</Form.Label>
+                                <Form.Control type="token" placeholder="Enter your admin token" ref={this.token} />
                             </Form.Group>
 
                             <Button variant="danger" onClick={() => this.submit()}>

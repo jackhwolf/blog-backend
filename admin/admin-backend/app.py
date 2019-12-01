@@ -19,6 +19,7 @@ TOKEN = os.environ.get('token')
 
 # where I want to move files
 base_dir = '/home/twilight/py/mywebsite/frontend'
+base_repo = 'https://github.com/jackhwolf/blog/raw/master/src/posts/{}'
 post_base_dir = base_dir + '/src/posts/{}'
 
 # setup app
@@ -30,15 +31,29 @@ CORS(app)
 # LOGIC #
 #########
 
+def fixMediaPaths(filepath, postid, mpaths):
+    with open(filepath, 'r') as fp:
+        contents = fp.read()
+        for mp in mpaths:
+            mp = mp.split('/')[-1]
+            contents = contents.replace(mp, base_repo.format(postid) + "/" + mp)
+    with open(filepath, 'w') as fp:
+        fp.write(contents)
+
 def redeploy(json):
-    dst = post_base_dir.format(json['postid'])
-    os.makedirs(dst, exist_ok=True)
-    dst = f"{dst}/post.md"
-    shutil.copy(json['localpath'], dst)
+    ddst = post_base_dir.format(json['postid'])
+    os.makedirs(ddst, exist_ok=True)
+    dst = f"{ddst}/post.md"
+    shutil.copy(json['localbase'] + json['localpath'], dst)
+    mpaths = json['mediapaths']
+    if mpaths != '':
+        mpaths = mpaths.split(', ')
+        fixMediaPaths(dst, json['postid'], mpaths)
+        for mp in mpaths:
+            shutil.copy(json['localbase'] + mp, ddst + "/" + mp.split('/')[-1])
     owd = os.getcwd()
     os.chdir(base_dir)
-    os.system(
-        "git add src/posts/*; git commit -m \"submission [$(date)]\"; git push -u origin master; npm run deploy")
+    os.system("git add src/posts/*; git commit -m \"submission: [$(date)]\"; git push -u origin master; npm run deploy")
     os.chdir(owd)
     return True
 
