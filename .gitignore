@@ -5,6 +5,7 @@ venv
 **/.token
 **/.vscode
 **/*.sh
-**/admin-frontend
-**/admin-frontend/*
+**/admin/*
+**/frontend
+**/*.ipynb
 **/.ipynb_checkpoints
