@@ -34,7 +34,7 @@ def redeploy(json):
     dst = post_base_dir.format(json['postid'])
     os.makedirs(dst, exist_ok=True)
     dst = f"{dst}/post.md"
-    shutil.move(json['localpath'], dst)
+    shutil.copy(json['localpath'], dst)
     owd = os.getcwd()
     os.chdir(base_dir)
     os.system(
