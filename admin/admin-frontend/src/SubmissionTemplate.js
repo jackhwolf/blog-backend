@@ -21,7 +21,8 @@ class SubmissionTemplate extends React.Component {
             btnStyle: { padding: '5px', margin: '10px', width: '5rem', height: '3rem'}, 
             height: this.big,
             cardVar: this.varA,
-            trigger: 1
+            trigger: 1,
+            status: "Pending"
         }
         this.myForm = React.createRef()
         this.title = React.createRef()
@@ -57,7 +58,7 @@ class SubmissionTemplate extends React.Component {
         console.log("[SubmissionTemplate.submit] local response:")
         console.log(localresp)
         // give user result
-        this.setState({localresp: localresp})
+        this.setState({localresp: localresp, status: localresp.status})
         ReactDOM.findDOMNode(this.myForm).reset();
     }
 
@@ -69,13 +70,16 @@ class SubmissionTemplate extends React.Component {
     }
 
     // change the card that is displayed
-    changeDisplay() {
+    changeDisplay(isAgain) {
         this.setState({
             submitStyle: { display: this.state.resultStyle.display },
             resultStyle: { display: this.state.submitStyle.display },
             height: this.state.height === this.big ? this.little : this.big,
             cardVar: this.state.cardVar === this.varA ? this.varB : this.varA
         })
+        if (isAgain !== undefined) {
+            this.setState({status: "Pending"})
+        }
     }
 
     // helper method to POST to url w/ given body
@@ -141,12 +145,12 @@ class SubmissionTemplate extends React.Component {
                     <div style={this.state.resultStyle}>
                         <Card.Header style={{ fontSize: 'xx-large' }}>Check post status</Card.Header>
                         <Card.Text style={this.state.ctStyle}>
-                            Status: <Card.Text style={{ fontSize: 'x-large' }}>{this.state.localresp === undefined ? "Pending" : this.state.localresp.status}</Card.Text>
+                            Status: <Card.Text style={{ fontSize: 'x-large' }}>{this.state.status}</Card.Text>
                         </Card.Text>
                         <Button style={this.state.btnStyle} variant="secondary" onClick={() => this.refresh()}>
                             refresh
                         </Button>
-                        <Button style={this.state.btnStyle} variant="primary" onClick={() => this.changeDisplay()}>
+                        <Button style={this.state.btnStyle} variant="primary" onClick={() => this.changeDisplay(true)}>
                             again
                         </Button>
                     </div>
