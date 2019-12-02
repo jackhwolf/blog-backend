@@ -2,8 +2,7 @@ from flask import Flask
 import time
 
 # create app object
-# __name__ tells the object to look for resources
-#  in this modules path
+# __name__ tells the object to look for resources in this modules path
 app = Flask(__name__)
 
 
