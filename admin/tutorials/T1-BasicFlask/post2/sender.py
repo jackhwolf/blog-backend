@@ -16,7 +16,7 @@ class sender:
         }
         self.results = {}
     
-    def send(self, method, params='/'):
+    def send(self, method, params='/', data=None):
         '''
         send a request of HTTP type method to self.url+params
         appends result to self.results[method]
@@ -28,7 +28,10 @@ class sender:
         '''
         func = self.mmap[method]
         rlist = self.results.get(method, [])
-        result = func(self.url + params).json()
+        result = func(
+            self.url + params.rstrip('/'),
+            json=data,
+            headers={'Content-Type': 'application/json'}).text
         rlist.append([method, params, result])
         self.results[method] = rlist
         return result
