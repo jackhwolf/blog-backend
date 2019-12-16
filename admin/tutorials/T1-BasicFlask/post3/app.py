@@ -18,9 +18,9 @@ users = UserLocalStorage()
 parser = reqparse.RequestParser()
 parser.add_argument('uname', type=str, required=True, help='Username of specified user.')
 for arg, hlp in [['email', 'users email'], 
-                  ['location', 'users location'],
-                  ['favoriteFood', 'users favorite food'],
-                  ['attrs', 'comma-separated string of attributes']]:
+                 ['location', 'users location'],
+                 ['favoriteFood', 'users favorite food'],
+                 ['attrs', 'comma-separated string of attributes']]:
     parser.add_argument(arg, type=str, help=hlp)
 
 '''define routes '''
