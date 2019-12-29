@@ -99,7 +99,7 @@ class SubmissionTemplate extends React.Component {
     render() {
         return (
             <>
-                <Card bg={this.state.cardVar} text="white" style={{width: '30rem', height: this.state.height}}>
+                <Card bg={this.state.cardVar} text="white" style={{width: '40rem', height: this.state.height}}>
                     <div style={this.state.submitStyle}>
                         <Card.Header style={{fontSize: 'xx-large'}}>Gimme that new post</Card.Header>
                         <Form id='myForm'
@@ -128,7 +128,7 @@ class SubmissionTemplate extends React.Component {
                             </Form.Group>
 
                             <Form.Group controlId="formPath">
-                                <Form.Label>Relative ath on local (from /home/twilight/admin/staging/</Form.Label>
+                                <Form.Label>Relative path on local (from /home/twilight/admin/staging/)</Form.Label>
                                 <Form.Control type="path" placeholder="Enter rel. path to post file on local" ref={this.path} />
                             </Form.Group>
 
