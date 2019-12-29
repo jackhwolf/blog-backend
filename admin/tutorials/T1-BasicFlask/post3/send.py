@@ -23,7 +23,7 @@ print(requests.post(url, data={
 print()
 print(json.dumps(requests.get(url, data={
     'uname': 'skippy',
-    'attrs': 'email, favoriteFood'
+    'attrs': 'email&favoriteFood'
 }).json(), indent=4))
 print()
 print(json.dumps(requests.patch(url, data={

@@ -1,6 +1,6 @@
 from flask import Flask, make_response
 from flask_restplus import Api, Resource, reqparse
-import json      # to format API responses
+import json      
 import time
 from userlocalstorage import UserLocalStorage
 

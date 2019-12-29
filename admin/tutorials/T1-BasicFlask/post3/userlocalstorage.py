@@ -47,7 +47,6 @@ class UserLocalStorage:
         user = self.users.get(uname)
         if user is not None:
             if data['attrs'] is not None:
-                print(data['attrs'])
                 attrs = data['attrs']
                 for k in attrs:
                     if k in user['userData']:
